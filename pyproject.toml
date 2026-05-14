@@ -1,6 +1,6 @@
 [project]
 name = "logger"
-version = "0.2.0"
+version = "0.2.3"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -8,9 +8,6 @@ requires-python = ">=3.10"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[tool.uv]
-explicit = true
 
 [[tool.uv.index]]
 name = 'home-index'

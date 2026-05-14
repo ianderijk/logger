@@ -61,3 +61,9 @@ class ProjectLogger:
 
     def critical(self, msg: str) -> None:
         self.logger.critical(msg)
+
+    def program_start(self) -> None:
+        self.info("Program starting")
+
+    def program_end(self) -> None:
+        self.info("Program ending")
