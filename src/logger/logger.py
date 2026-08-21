@@ -73,11 +73,3 @@ class ProjectLogger:
 
     def program_end(self) -> None:
         self.info("Program ending")
-
-
-logger = ProjectLogger("Foo", "DEBUG")
-logger.info("This is an info log")
-logger.debug("Debuggin' out")
-logger.warning("Last warning")
-logger.error("That was a mistake buddy")
-logger.critical("FUCKING RAGE")
