@@ -5,6 +5,8 @@ from typing import Literal
 
 
 class ProjectLogger:
+    HOST_IP = "192.168.0.19"
+
     def __init__(
         self,
         name: str,
@@ -16,6 +18,8 @@ class ProjectLogger:
 
         self._set_logger_format()
         self._attach_listener()
+
+        self._program_start()
 
         atexit.register(self._cleanup)
 
@@ -36,7 +40,8 @@ class ProjectLogger:
 
     def _set_logger_format(self) -> None:
         formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
         )
 
         console_handler = logging.StreamHandler()
@@ -45,13 +50,22 @@ class ProjectLogger:
         self.logger.addHandler(console_handler)
 
     def _attach_listener(self) -> None:
-        self.socket_handler = SocketHandler("localhost", DEFAULT_TCP_LOGGING_PORT)
+        self.socket_handler = SocketHandler(
+            ProjectLogger.HOST_IP, DEFAULT_TCP_LOGGING_PORT
+        )
         self.logger.addHandler(self.socket_handler)
 
     def _cleanup(self) -> None:
+        self._program_end()
         if self.socket_handler:
             self.socket_handler.close()
             self.logger.removeHandler(self.socket_handler)
+
+    def _program_start(self) -> None:
+        self.info("Program starting")
+
+    def _program_end(self) -> None:
+        self.info("Program ending")
 
     def info(self, msg: str) -> None:
         self.logger.info(msg)
@@ -67,9 +81,3 @@ class ProjectLogger:
 
     def critical(self, msg: str) -> None:
         self.logger.critical(msg)
-
-    def program_start(self) -> None:
-        self.info("Program starting")
-
-    def program_end(self) -> None:
-        self.info("Program ending")
