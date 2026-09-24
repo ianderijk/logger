@@ -1,11 +1,11 @@
-import logging
 import atexit
-from logging.handlers import SocketHandler, DEFAULT_TCP_LOGGING_PORT
+import logging
+from logging.handlers import DEFAULT_TCP_LOGGING_PORT, SocketHandler
 from typing import Literal
 
 
 class ProjectLogger:
-    HOST_IP = "192.168.0.19"
+    HOST_IP = "127.0.0.1"
 
     def __init__(
         self,
@@ -16,6 +16,7 @@ class ProjectLogger:
         self.level = self._set_log_level(level)
         self.socket_handler = None
 
+        self.logger.setLevel(self.level)
         self._set_logger_format()
         self._attach_listener()
 
@@ -26,17 +27,14 @@ class ProjectLogger:
     def _set_log_level(
         self, level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
     ):
-        match level:
-            case "DEBUG":
-                return logging.DEBUG
-            case "INFO":
-                return logging.INFO
-            case "WARNING":
-                return logging.WARNING
-            case "ERROR":
-                return logging.ERROR
-            case "CRITICAL":
-                return logging.CRITICAL
+        levels = {
+            "DEBUG": logging.DEBUG,
+            "INFO": logging.INFO,
+            "WARNING": logging.WARNING,
+            "ERROR": logging.ERROR,
+            "CRITICAL": logging.CRITICAL,
+        }
+        return levels.get(level, logging.INFO)
 
     def _set_logger_format(self) -> None:
         formatter = logging.Formatter(

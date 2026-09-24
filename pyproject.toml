@@ -4,7 +4,9 @@ version = "1.0.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "pilake>=1.0.4",
+]
 
 [build-system]
 requires = ["hatchling"]
